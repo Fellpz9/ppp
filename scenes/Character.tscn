@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://bftwntiawpjgs"]
+
+[ext_resource type="Script" uid="uid://c77dqflm3pn5r" path="res://scripts/Character.gd" id="1_3i3nt"]
+[ext_resource type="Texture2D" uid="uid://bbra7sw1txedo" path="res://assets/character_sheet.png" id="1_53v7d"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y7k42"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3i3nt"]
+atlas = ExtResource("1_53v7d")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_apuoc"]
+atlas = ExtResource("1_53v7d")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rguqb"]
+atlas = ExtResource("1_53v7d")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pry4r"]
+atlas = ExtResource("1_53v7d")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fwsyb"]
+atlas = ExtResource("1_53v7d")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0kroj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3i3nt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_apuoc")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rguqb")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pry4r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fwsyb")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1424253732 groups=["character"]]
+script = ExtResource("1_3i3nt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1571362279]
+shape = SubResource("CapsuleShape2D_y7k42")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2021181298]
+scale = Vector2(1.8, 1.8)
+sprite_frames = SubResource("SpriteFrames_0kroj")
+animation = &"idle"
+
+[node name="InvincibleTimer" type="Timer" parent="." unique_id=1226509768]
+one_shot = true
+
+[node name="SpeedTimer" type="Timer" parent="." unique_id=858637954]
+one_shot = true

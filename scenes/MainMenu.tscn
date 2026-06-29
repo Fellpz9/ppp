@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://ca4qdvxu6xd8j"]
+
+[ext_resource type="Script" uid="uid://c7ooopo6pt738" path="res://scripts/MainMenu.gd" id="1_yqorp"]
+
+[node name="MainMenu" type="Node2D" unique_id=1078170973]
+
+[node name="Control" type="Control" parent="." unique_id=1659895516]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_yqorp")
+
+[node name="CenterContainer" type="CenterContainer" parent="Control" unique_id=1528492503]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/CenterContainer" unique_id=1714543612]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Control/CenterContainer/VBoxContainer" unique_id=1203722438]
+layout_mode = 2
+text = "PREPOSTEROUS PLATFORM PARTY"
+horizontal_alignment = 1
+
+[node name="PlayButton" type="Button" parent="Control/CenterContainer/VBoxContainer" unique_id=584878864]
+layout_mode = 2
+text = "PLAY"
+
+[node name="QuitButton" type="Button" parent="Control/CenterContainer/VBoxContainer" unique_id=1875198923]
+layout_mode = 2
+text = "QUIT"

@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://bw3tovx54tb5r"]
+
+[ext_resource type="Script" uid="uid://c6503qpxfu2x" path="res://scripts/GameScene.gd" id="1_hvuor"]
+[ext_resource type="PackedScene" uid="uid://bftwntiawpjgs" path="res://scenes/Character.tscn" id="2_6ytau"]
+[ext_resource type="Script" uid="uid://d18h5ro54ereh" path="res://scripts/PlatformManager.gd" id="2_i2arf"]
+[ext_resource type="Script" uid="uid://bqeprr2wb8tbc" path="res://scripts/PowerUpManager.gd" id="3_1kil2"]
+[ext_resource type="Script" uid="uid://b2m8l7n2hgyc6" path="res://scripts/HandController.gd" id="4_5cvvu"]
+[ext_resource type="Script" uid="uid://b07nlp37mpwfa" path="res://scripts/HUD.gd" id="5_ed8b8"]
+[ext_resource type="Texture2D" uid="uid://cniklv7yragi3" path="res://assets/hand.png" id="5_xs4ih"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6ytau"]
+radius = 35.17101
+
+[node name="GameScene" type="Node2D" unique_id=411401849]
+script = ExtResource("1_hvuor")
+character_scene = ExtResource("2_6ytau")
+
+[node name="Background" type="ColorRect" parent="." unique_id=950714963]
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0.05882353, 0.05882353, 0.11764706, 1)
+
+[node name="PlatformManager" type="Node2D" parent="." unique_id=626421711]
+script = ExtResource("2_i2arf")
+GRID_ORIGIN = Vector2(180, 300)
+
+[node name="PowerUpManager" type="Node2D" parent="." unique_id=333114761]
+position = Vector2(0, 270)
+script = ExtResource("3_1kil2")
+
+[node name="HandController" type="CharacterBody2D" parent="." unique_id=1532585146 groups=["hand"]]
+script = ExtResource("4_5cvvu")
+
+[node name="Sprite2D" type="Sprite2D" parent="HandController" unique_id=86419184]
+texture = ExtResource("5_xs4ih")
+
+[node name="ActionCooldownTimer" type="Timer" parent="HandController" unique_id=1060436563]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HandController" unique_id=548291160]
+shape = SubResource("CircleShape2D_6ytau")
+
+[node name="CharacterSpawn" type="Marker2D" parent="." unique_id=932885314]
+position = Vector2(630, 27)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=265861846]
+script = ExtResource("5_ed8b8")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD" unique_id=611682280]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/MarginContainer" unique_id=1325160839]
+layout_mode = 2
+
+[node name="TopBar" type="HBoxContainer" parent="HUD/MarginContainer/VBoxContainer" unique_id=1219382957]
+layout_mode = 2
+
+[node name="LivesContainer" type="HBoxContainer" parent="HUD/MarginContainer/VBoxContainer/TopBar" unique_id=2138707522]
+layout_mode = 2
+
+[node name="RoundLabel" type="Label" parent="HUD/MarginContainer/VBoxContainer/TopBar" unique_id=1951117494]
+layout_mode = 2
+
+[node name="TimerLabel" type="Label" parent="HUD/MarginContainer/VBoxContainer/TopBar" unique_id=1529501968]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HUD/MarginContainer/VBoxContainer" unique_id=44902598]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PowerupBar" type="HBoxContainer" parent="HUD/MarginContainer/VBoxContainer" unique_id=309745960]
+layout_mode = 2
+
+[node name="CharPowerup" type="Label" parent="HUD/MarginContainer/VBoxContainer/PowerupBar" unique_id=1144266833]
+layout_mode = 2
+
+[node name="HandPowerup" type="Label" parent="HUD/MarginContainer/VBoxContainer/PowerupBar" unique_id=1077875784]
+layout_mode = 2
+
+[node name="RoundAnnounce" type="Label" parent="HUD/MarginContainer" unique_id=2017058195]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameOverPanel" type="Panel" parent="HUD/MarginContainer" unique_id=2054971930]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/MarginContainer/GameOverPanel" unique_id=1019281521]
+layout_mode = 0
+offset_left = 577.0
+offset_top = 329.0
+offset_right = 617.0
+offset_bottom = 352.0
+horizontal_alignment = 1
+vertical_alignment = 1
