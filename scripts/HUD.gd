@@ -45,9 +45,9 @@ func _on_round_ended(winner: int) -> void:
 func _on_game_over(winner: int) -> void:
 	game_over_panel.show()
 	if winner == GameManager.Winner.CHARACTER:
-		game_over_label.text = "🎉 CHARACTER WINS!\nSurvived all 5 rounds!"
+		game_over_label.text = "CHARACTER WINS!\nSurvived all 5 rounds!"
 	else:
-		game_over_label.text = "👏 HANDS WIN!\nThe character has fallen!"
+		game_over_label.text = "HANDS WIN!\nThe character has fallen!"
 
 func _on_lives_changed(new_lives: int) -> void:
 	_update_lives(new_lives)
@@ -62,10 +62,10 @@ func _update_lives(count: int) -> void:
 
 func show_powerup(player: String, type: String) -> void:
 	if player == "character":
-		powerup_label_char.text = "✨ " + type.replace("_", " ").to_upper()
+		powerup_label_char.text = " " + type.replace("_", " ").to_upper()
 		_fade_label(powerup_label_char)
 	else:
-		powerup_label_hand.text = "🔥 " + type.replace("_", " ").to_upper()
+		powerup_label_hand.text = " " + type.replace("_", " ").to_upper()
 		_fade_label(powerup_label_hand)
 
 func _fade_label(label: Label) -> void:

@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://8on1pstvx6y"]
+
+[ext_resource type="Script" uid="uid://c1gnpjj3dcxke" path="res://scenes/online_menu.gd" id="1_1en3f"]
+
+[node name="OnlineMenu" type="Control" unique_id=1902730116]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_1en3f")
+
+[node name="LoginPanel" type="Panel" parent="." unique_id=1139141100]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LoginPanel" unique_id=1301445788]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.0
+offset_top = -76.0
+offset_right = 34.0
+offset_bottom = 76.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EmailInput" type="LineEdit" parent="LoginPanel/VBoxContainer" unique_id=438773060]
+layout_mode = 2
+placeholder_text = "E-mail"
+clear_button_enabled = true
+
+[node name="UsernameInput" type="LineEdit" parent="LoginPanel/VBoxContainer" unique_id=1888996011]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "Username"
+max_length = 9
+expand_to_text_length = true
+clear_button_enabled = true
+
+[node name="PasswordInput" type="LineEdit" parent="LoginPanel/VBoxContainer" unique_id=516756711]
+layout_mode = 2
+placeholder_text = "Password"
+clear_button_enabled = true
+secret = true
+
+[node name="LoginButton" type="Button" parent="LoginPanel/VBoxContainer" unique_id=1554822424]
+layout_mode = 2
+text = "Login"
+
+[node name="RegisterButton" type="Button" parent="LoginPanel/VBoxContainer" unique_id=45212692]
+layout_mode = 2
+text = "Register"
+
+[node name="ErrorLabel" type="Label" parent="LoginPanel/VBoxContainer" unique_id=1725900689]
+layout_mode = 2
+
+[node name="LobbyPanel" type="Panel" parent="." unique_id=1673115977]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LobbyPanel" unique_id=1697101344]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ChatArea" type="VBoxContainer" parent="LobbyPanel/HBoxContainer" unique_id=1976174817]
+layout_mode = 2
+
+[node name="ChatHistory" type="RichTextLabel" parent="LobbyPanel/HBoxContainer/ChatArea" unique_id=294032095]
+custom_minimum_size = Vector2(250, 300)
+layout_mode = 2
+
+[node name="ChatInput" type="LineEdit" parent="LobbyPanel/HBoxContainer/ChatArea" unique_id=817347179]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="SendChatButton" type="Button" parent="LobbyPanel/HBoxContainer/ChatArea" unique_id=1132085705]
+layout_mode = 2
+text = "Send
+"
+
+[node name="MatchesArea" type="VBoxContainer" parent="LobbyPanel/HBoxContainer" unique_id=962953018]
+layout_mode = 2
+
+[node name="MatchesList" type="ItemList" parent="LobbyPanel/HBoxContainer/MatchesArea" unique_id=1345920673]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+
+[node name="CreateMatchButton" type="Button" parent="LobbyPanel/HBoxContainer/MatchesArea" unique_id=923349250]
+layout_mode = 2
+text = "Create match"
+
+[node name="JoinMatchButton" type="Button" parent="LobbyPanel/HBoxContainer/MatchesArea" unique_id=277458429]
+layout_mode = 2
+text = "Join match"
+
+[node name="StartMatchButton" type="Button" parent="LobbyPanel/HBoxContainer/MatchesArea" unique_id=1621394601]
+layout_mode = 2
+text = "Start match"

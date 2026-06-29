@@ -14,7 +14,7 @@ func _ready() -> void:
 	tween.tween_property(title_label, "rotation_degrees", -2.0, 0.8).set_trans(Tween.TRANS_SINE)
 
 func _on_play_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/GameScene.tscn")
+	get_tree().change_scene_to_file("res://scenes/OnlineMenu.tscn")
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()

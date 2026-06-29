@@ -16,6 +16,10 @@ func _ready() -> void:
 	hand_controller.platform_manager = platform_manager
 	powerup_manager.hand_ref = hand_controller
 	
+	NetworkManager.game_action_received.connect(_on_network_action)
+	if NetworkManager.my_role == "character":
+		hand_controller.set_process(false)
+		hand_controller.visible = true
 	# Connect signals
 	GameManager.round_started.connect(_on_round_started)
 	GameManager.round_ended.connect(_on_round_ended)
@@ -110,3 +114,33 @@ func _create_code_character() -> CharacterBody2D:
 	body.add_child(spd_timer)
 	
 	return body
+
+func _on_network_action(action: String, payload: Dictionary):
+	# Se a Mão fez algo, o Personagem precisa ver a plataforma aparecendo/sumindo
+	if action == "place_platform":
+		platform_manager.place_platform(Vector2i(payload.x, payload.y), payload.get("spikes", false))
+		
+	elif action == "remove_platform":
+		platform_manager.remove_platform(Vector2i(payload.x, payload.y))
+		
+	elif action == "shake_platform":
+		platform_manager.shake_platform(Vector2i(payload.x, payload.y))
+		
+	elif action == "tilt_platform":
+		platform_manager.tilt_platform(Vector2i(payload.x, payload.y))
+	
+	elif action == "sync_hand" and NetworkManager.my_role == "character":
+		hand_controller.position = Vector2(payload.x, payload.y)
+		
+	# Se o Personagem se moveu, a Mão precisa ver ele andando
+	elif action == "sync_char" and NetworkManager.my_role == "hands":
+		if is_instance_valid(character):
+			character.position = Vector2(payload.x, payload.y)
+			character.sprite.animation = payload.anim
+			character.sprite.flip_h = payload.flip
+
+	elif action == "spawn_powerup" and NetworkManager.my_role == "hands":
+		powerup_manager.spawn_from_network(payload.id, payload.type, Vector2(payload.x, payload.y), payload.for_char)
+		
+	elif action == "collect_powerup":
+		powerup_manager.collect_from_network(payload.id)

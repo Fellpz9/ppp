@@ -45,6 +45,9 @@ func _process(delta: float) -> void:
 	_handle_input()
 
 func _handle_input() -> void:
+	if NetworkManager.my_role != "hands":
+		return
+		
 	# Left click - place/interact
 	if Input.is_action_pressed("hand_place") and place_cooldown_timer <= 0:
 		_try_place_platform()
@@ -68,27 +71,34 @@ func _try_place_platform() -> void:
 		return
 	var grid_pos = platform_manager.world_to_grid(get_global_mouse_position())
 	platform_manager.place_platform(grid_pos, spike_mode)
-	#hand_sprite.play("grab")
+	
+	NetworkManager.send_action("place_platform", {"x": grid_pos.x, "y": grid_pos.y, "spikes": spike_mode})
+	
 	await get_tree().create_timer(0.2).timeout
-	#hand_sprite.play("idle")
 
 func _try_remove_platform() -> void:
 	if platform_manager == null:
 		return
 	var grid_pos = platform_manager.world_to_grid(get_global_mouse_position())
 	platform_manager.remove_platform(grid_pos)
+	
+	NetworkManager.send_action("remove_platform", {"x": grid_pos.x, "y": grid_pos.y})
 
 func _try_tilt_platform() -> void:
 	if platform_manager == null:
 		return
 	var grid_pos = platform_manager.world_to_grid(get_global_mouse_position())
 	platform_manager.tilt_platform(grid_pos)
+	
+	NetworkManager.send_action("tilt_platform", {"x": grid_pos.x, "y": grid_pos.y})
 
 func _try_shake_platform() -> void:
 	if platform_manager == null:
 		return
 	var grid_pos = platform_manager.world_to_grid(get_global_mouse_position())
 	platform_manager.shake_platform(grid_pos)
+	
+	NetworkManager.send_action("shake_platform", {"x": grid_pos.x, "y": grid_pos.y})
 
 func apply_powerup(type: String) -> void:
 	active_powerups.append(type)

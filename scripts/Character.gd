@@ -75,6 +75,13 @@ func _physics_process(delta: float) -> void:
 	# Check fell off screen
 	if position.y > get_viewport_rect().size.y + 100:
 		die()
+		
+	NetworkManager.send_action("sync_char", {
+		"x": position.x,
+		"y": position.y,
+		"anim": sprite.animation,
+		"flip": sprite.flip_h
+	})
 
 func _do_jump() -> void:
 	velocity.y = JUMP_VELOCITY
