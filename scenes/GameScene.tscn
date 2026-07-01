@@ -5,8 +5,11 @@
 [ext_resource type="Script" uid="uid://d18h5ro54ereh" path="res://scripts/PlatformManager.gd" id="2_i2arf"]
 [ext_resource type="Script" uid="uid://bqeprr2wb8tbc" path="res://scripts/PowerUpManager.gd" id="3_1kil2"]
 [ext_resource type="Script" uid="uid://b2m8l7n2hgyc6" path="res://scripts/HandController.gd" id="4_5cvvu"]
+[ext_resource type="PackedScene" uid="uid://d2f2y0etr53sa" path="res://scenes/platform.tscn" id="4_pynjx"]
 [ext_resource type="Script" uid="uid://b07nlp37mpwfa" path="res://scripts/HUD.gd" id="5_ed8b8"]
 [ext_resource type="Texture2D" uid="uid://cniklv7yragi3" path="res://assets/hand.png" id="5_xs4ih"]
+[ext_resource type="PackedScene" uid="uid://co1lebvm88dp" path="res://scenes/spiked_platform.tscn" id="5_yrli1"]
+[ext_resource type="PackedScene" uid="uid://cdkoy04y136l0" path="res://scenes/PowerUp.tscn" id="7_yrli1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6ytau"]
 radius = 35.17101
@@ -23,10 +26,13 @@ color = Color(0.05882353, 0.05882353, 0.11764706, 1)
 [node name="PlatformManager" type="Node2D" parent="." unique_id=626421711]
 script = ExtResource("2_i2arf")
 GRID_ORIGIN = Vector2(180, 300)
+platform_scene = ExtResource("4_pynjx")
+spike_platform_scene = ExtResource("5_yrli1")
 
 [node name="PowerUpManager" type="Node2D" parent="." unique_id=333114761]
 position = Vector2(0, 270)
 script = ExtResource("3_1kil2")
+powerup_scene = ExtResource("7_yrli1")
 
 [node name="HandController" type="CharacterBody2D" parent="." unique_id=1532585146 groups=["hand"]]
 script = ExtResource("4_5cvvu")

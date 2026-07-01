@@ -72,6 +72,14 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		
+		# Verifica se o objeto com o qual colidimos tem a tag "is_spike"
+		if collider != null and collider.has_meta("is_spike") and collider.get_meta("is_spike"):
+			die()
+	
 	# Check fell off screen
 	if position.y > get_viewport_rect().size.y + 100:
 		die()

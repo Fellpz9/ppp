@@ -16,6 +16,8 @@ signal lobby_updated(users: Array, matches: Array)
 signal match_joined(m_id: String, players: Array)
 signal match_started(roles: Dictionary)
 signal game_action_received(action: String, payload: Dictionary)
+signal match_created(m_id: String)
+signal match_player_joined(players: Array)
 
 func _ready():
 	socket.connect_to_url(url)
@@ -61,19 +63,22 @@ func _handle_message(data: Dictionary):
 		lobby_chat_received.emit(data.get("from", ""), data.get("message", ""), data.get("timestamp", 0))
 		
 	elif msg_type == "match_update":
-		# APAGUE a linha que estava aqui (lobby_updated.emit...)
-		# Apenas avisamos internamente que alguém entrou na sala
-		var players_na_sala = data.get("players", [])
-		print("Atualização da sala! Jogadores: ", players_na_sala)
+		var players = data.get("players", [])
+		print("[Network] Servidor enviou match_update. Players: ", players)
+		match_player_joined.emit(players)
 		
 	elif msg_type == "join_match_result":
-		# Quando o Player 2 tenta entrar na sala
+		print("[Network] Resultado de Join Match recebido: ", data)
 		if data.get("ok"):
-			print("Você entrou na partida com sucesso! Aguardando o host iniciar...")
-			# Opcional: Aqui você poderia emitir um sinal para a UI desativar os botões 
-			# e mostrar um aviso de "Aguardando Host..."
+			lobby_chat_received.emit("SISTEMA", "Você entrou na partida com sucesso! Aguardando o Host iniciar...", 0)
 		else:
 			print("Erro ao entrar na partida: ", data.get("error", ""))
+	
+	elif msg_type == "create_match_result":
+		if data.get("ok"):
+			match_created.emit(data.get("match_id", ""))
+		else:
+			print("Erro ao criar partida:", data.get("error", ""))
 
 # -- Funções para enviar dados ao servidor --
 func send_msg(dict: Dictionary):

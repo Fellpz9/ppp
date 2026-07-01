@@ -19,7 +19,12 @@ extends Control
 @onready var btn_join_match = $LobbyPanel/HBoxContainer/MatchesArea/JoinMatchButton
 @onready var btn_start_match = $LobbyPanel/HBoxContainer/MatchesArea/StartMatchButton
 
+@onready var current_user_label = $LobbyPanel/CurrentUserLabel
+
 var selected_match_id = ""
+
+var known_lobby_users: Array = []
+var is_first_lobby_update: bool = true
 
 func _ready() -> void:
 	# Conectar botões da interface
@@ -37,10 +42,23 @@ func _ready() -> void:
 	NetworkManager.register_response.connect(_on_register_response)
 	NetworkManager.lobby_updated.connect(_on_lobby_updated)
 	NetworkManager.lobby_chat_received.connect(_on_chat_received)
+	NetworkManager.match_created.connect(_on_match_created)
+	NetworkManager.match_player_joined.connect(_on_match_player_joined)
 	
 	lobby_panel.hide()
 	login_panel.show()
 	btn_start_match.disabled = true
+	
+	var meus_botoes = [
+		btn_login, btn_register, btn_send_chat, 
+		btn_create_match, btn_join_match, btn_start_match
+	]
+	
+	# Espera um frame para garantir que os tamanhos (sizes) dos botões foram calculados
+	await get_tree().process_frame 
+	
+	for btn in meus_botoes:
+		_setup_button_wobble(btn)
 
 # --- LÓGICA DE AUTENTICAÇÃO ---
 func _on_register_pressed():
@@ -56,6 +74,10 @@ func _on_login_response(ok: bool, msg: String):
 	if ok:
 		login_panel.hide()
 		lobby_panel.show()
+		current_user_label.text = "Logado como: " + username_input.text
+		
+		is_first_lobby_update = true
+		known_lobby_users.clear()
 	else:
 		error_label.text = msg
 
@@ -70,6 +92,17 @@ func _on_chat_received(sender: String, message: String, time: int):
 
 # --- LÓGICA DE PARTIDAS ---
 func _on_lobby_updated(users: Array, matches: Array):
+	if is_first_lobby_update:
+		# Na primeira vez, apenas memoriza quem já estava lá
+		known_lobby_users = users.duplicate()
+		is_first_lobby_update = false
+	else:
+		# Compara quem chegou de novo
+		for u in users:
+			if not u in known_lobby_users:
+				# Usa a própria função de chat para exibir a mensagem do sistema!
+				_on_chat_received("SISTEMA", u + " entrou no lobby!", 0)
+		known_lobby_users = users.duplicate()
 	matches_list.clear()
 	for m in matches:
 		var status = " (" + str(m.get("player_count", 1)) + "/2)"
@@ -82,6 +115,7 @@ func _on_match_selected(index: int):
 func _on_create_match_pressed():
 	NetworkManager.create_match()
 	btn_start_match.disabled = false # Habilita para o criador
+	btn_create_match.disabled = true 
 
 func _on_join_match_pressed():
 	if selected_match_id != "":
@@ -90,3 +124,44 @@ func _on_join_match_pressed():
 func _on_start_match_pressed():
 	NetworkManager.start_match()
 	# O servidor enviará "match_started" para o NetworkManager, que trocará de cena automaticamente!
+
+func _on_match_created(m_id: String):
+	# Habilita o botão de Start agora que temos confirmação
+	btn_start_match.disabled = false
+	
+	# Manda o aviso no chat local do criador
+	_on_chat_received("SISTEMA", "Você criou a partida [" + m_id + "] com sucesso! Aguardando oponente...", 0)
+
+func _on_match_player_joined(players: Array):
+	print("[UI] Sinal de match_player_joined chegou no menu. Players: ", players)
+	if players.size() > 1:
+		# Pega o último jogador que entrou e garante que é do tipo String
+		var novo_jogador = str(players[players.size() - 1]) 
+		_on_chat_received("SISTEMA", novo_jogador + " entrou na sua partida! Você já pode iniciar.", 0)
+
+# --- EFEITOS VISUAIS (WOBBLE) ---
+func _setup_button_wobble(btn: Button) -> void:
+	# Centraliza o eixo de rotação no meio do botão
+	btn.pivot_offset = btn.size / 2.0
+	
+	# Quando o mouse entra, começa a balançar
+	btn.mouse_entered.connect(func():
+		# Cria uma animação em loop repetitivo
+		var tween = create_tween().set_loops()
+		tween.tween_property(btn, "rotation_degrees", 2.0, 0.5).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(btn, "rotation_degrees", -2.0, 0.5).set_trans(Tween.TRANS_SINE)
+		
+		# Guarda o tween dentro do botão para podermos parar depois
+		btn.set_meta("wobble_tween", tween)
+	)
+	
+	# Quando o mouse sai, para de balançar e volta ao normal
+	btn.mouse_exited.connect(func():
+		if btn.has_meta("wobble_tween"):
+			var tween = btn.get_meta("wobble_tween")
+			if tween:
+				tween.kill() # Para a animação atual
+		
+		# Volta a rotação para 0 suavemente
+		create_tween().tween_property(btn, "rotation_degrees", 0.0, 0.1)
+	)

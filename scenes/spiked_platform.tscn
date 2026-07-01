@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://co1lebvm88dp"]
+
+[ext_resource type="Texture2D" uid="uid://5ed1avvtch7d" path="res://assets/spiked_platform.png" id="1_stxcv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_flmv1"]
+size = Vector2(80, 32)
+
+[node name="SpikePlatform" type="StaticBody2D" unique_id=505132684]
+metadata/is_spike = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1715486079]
+shape = SubResource("RectangleShape2D_flmv1")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1343415473]
+texture = ExtResource("1_stxcv")

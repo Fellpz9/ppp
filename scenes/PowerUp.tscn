@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cdkoy04y136l0"]
+
+[ext_resource type="Script" uid="uid://dknncj1tr0hvh" path="res://scripts/PowerUp.gd" id="1_0ocr6"]
+[ext_resource type="Texture2D" uid="uid://b1kgpkls20xe4" path="res://assets/powerups.png" id="1_vxdkk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ocr6"]
+size = Vector2(32, 32)
+
+[node name="PowerUp" type="Area2D" unique_id=2075200478]
+script = ExtResource("1_0ocr6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1146995829]
+shape = SubResource("RectangleShape2D_0ocr6")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=143400356]
+texture = ExtResource("1_vxdkk")
+vframes = 7

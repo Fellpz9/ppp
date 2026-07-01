@@ -24,6 +24,7 @@ var spike_mode := false
 var platform_manager: Node2D
 var cursor_indicator: Node2D
 
+@onready var hand_sprite: Sprite2D = $Sprite2D
 @onready var action_cooldown: Timer = $ActionCooldownTimer
 
 func _ready() -> void:
@@ -65,6 +66,12 @@ func _handle_input() -> void:
 	# E key - shake platform
 	if Input.is_action_just_pressed("hand_shake"):
 		_try_shake_platform()
+		
+	var tempo = Time.get_ticks_msec() * 0.005
+	hand_sprite.rotation_degrees = sin(tempo) * 15.0 
+	
+	# NOVO: Envia a posição atual para o outro jogador!
+	NetworkManager.send_action("sync_hand", {"x": position.x, "y": position.y})
 
 func _try_place_platform() -> void:
 	if platform_manager == null:
