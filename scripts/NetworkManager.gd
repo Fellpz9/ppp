@@ -18,6 +18,7 @@ signal match_started(roles: Dictionary)
 signal game_action_received(action: String, payload: Dictionary)
 signal match_created(m_id: String)
 signal match_player_joined(players: Array)
+signal match_ended_received(winner: String)
 
 func _ready():
 	socket.connect_to_url(url)
@@ -79,6 +80,9 @@ func _handle_message(data: Dictionary):
 			match_created.emit(data.get("match_id", ""))
 		else:
 			print("Erro ao criar partida:", data.get("error", ""))
+	
+	elif msg_type == "match_ended":
+		match_ended_received.emit(data.get("winner", ""))
 
 # -- Funções para enviar dados ao servidor --
 func send_msg(dict: Dictionary):
@@ -105,3 +109,6 @@ func register(email: String, user: String, pswd: String):
 
 func send_chat(msg: String):
 	send_msg({"type": "lobby_chat", "message": msg})
+	
+func end_match(winner: String):
+	send_msg({"type": "end_match", "winner": winner})

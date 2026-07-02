@@ -27,6 +27,7 @@ var known_lobby_users: Array = []
 var is_first_lobby_update: bool = true
 
 func _ready() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	# Conectar botões da interface
 	btn_login.pressed.connect(_on_login_pressed)
 	btn_register.pressed.connect(_on_register_pressed)
@@ -45,9 +46,20 @@ func _ready() -> void:
 	NetworkManager.match_created.connect(_on_match_created)
 	NetworkManager.match_player_joined.connect(_on_match_player_joined)
 	
-	lobby_panel.hide()
-	login_panel.show()
-	btn_start_match.disabled = true
+	if NetworkManager.username != "":
+		# Pula direto pro Lobby!
+		login_panel.hide()
+		lobby_panel.show()
+		btn_start_match.disabled = true
+		current_user_label.text = "Logado como: " + NetworkManager.username
+		
+		# Pede pro servidor a lista atualizada de salas assim que volta
+		NetworkManager.send_msg({"type": "get_lobby"}) 
+	else:
+		# Primeira vez abrindo o jogo
+		lobby_panel.hide()
+		login_panel.show()
+		btn_start_match.disabled = true
 	
 	var meus_botoes = [
 		btn_login, btn_register, btn_send_chat, 

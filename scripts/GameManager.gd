@@ -1,8 +1,5 @@
 extends Node
 
-# GameManager.gd
-# Singleton autoload - add to Project > AutoLoad as "GameManager"
-
 signal round_started(round_number)
 signal round_ended(winner)
 signal game_over(final_winner)
@@ -10,7 +7,7 @@ signal lives_changed(new_lives)
 
 const MAX_ROUNDS := 5
 const PLAYER_LIVES := 3
-const ROUND_TIME := 30.0  # seconds per round
+const ROUND_TIME := 18.0
 
 var current_round := 0
 var player_lives := PLAYER_LIVES

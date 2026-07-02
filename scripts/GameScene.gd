@@ -17,6 +17,7 @@ func _ready() -> void:
 	powerup_manager.hand_ref = hand_controller
 	
 	NetworkManager.game_action_received.connect(_on_network_action)
+	NetworkManager.match_ended_received.connect(_on_network_match_ended)
 	if NetworkManager.my_role == "character":
 		hand_controller.set_process(false)
 		hand_controller.visible = true
@@ -42,15 +43,19 @@ func _on_round_started(round_number: int) -> void:
 	tween.tween_property(background, "color", 
 		Color(0.06 + t * 0.15, 0.06, 0.12), 1.0)
 
-func _on_round_ended(_winner: int) -> void:
+func _on_round_ended(winner: int) -> void:
 	# Brief pause before announcing
 	pass
 
-func _on_game_over(_winner: int) -> void:
+func _on_game_over(winner: int) -> void:
 	# Disable inputs
 	hand_controller.set_process(false)
 	if is_instance_valid(character):
 		character.set_physics_process(false)
+		
+	if NetworkManager.my_role == "character":
+		var winner_str = "character" if winner == GameManager.Winner.CHARACTER else "hands"
+		NetworkManager.end_match(winner_str)
 
 func _spawn_character() -> void:
 	# Remove old character if exists
@@ -144,3 +149,11 @@ func _on_network_action(action: String, payload: Dictionary):
 		
 	elif action == "collect_powerup":
 		powerup_manager.collect_from_network(payload.id)
+	
+func _on_network_match_ended(winner: String) -> void:
+	# Espera 4 segundos para os jogadores poderem ler a tela de "Game Over"
+	await get_tree().create_timer(4.0).timeout
+	
+	# Limpa o cargo atual e volta pro menu
+	NetworkManager.my_role = ""
+	get_tree().change_scene_to_file("res://scenes/OnlineMenu.tscn")
