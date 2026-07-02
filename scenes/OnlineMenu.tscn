@@ -2,6 +2,12 @@
 
 [ext_resource type="Script" uid="uid://c1gnpjj3dcxke" path="res://scripts/online_menu.gd" id="1_1en3f"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1en3f"]
+bg_color = Color(0.05882353, 0.05882353, 0.11764706, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_djnhb"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [node name="OnlineMenu" type="Control" unique_id=1902730116]
 layout_mode = 3
 anchors_preset = 0
@@ -11,6 +17,8 @@ script = ExtResource("1_1en3f")
 layout_mode = 0
 offset_right = 1280.0
 offset_bottom = 720.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1en3f")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LoginPanel" unique_id=1301445788]
 layout_mode = 1
@@ -60,6 +68,7 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 1280.0
 offset_bottom = 720.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_djnhb")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="LobbyPanel" unique_id=1697101344]
 layout_mode = 0
@@ -107,3 +116,11 @@ offset_top = 374.0
 offset_right = 250.0
 offset_bottom = 397.0
 horizontal_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1191713868]
+z_index = -2
+layout_mode = 1
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+color = Color(0.05882353, 0.05882353, 0.11764706, 1)

@@ -148,8 +148,8 @@ func _setup_button_wobble(btn: Button) -> void:
 	btn.mouse_entered.connect(func():
 		# Cria uma animação em loop repetitivo
 		var tween = create_tween().set_loops()
-		tween.tween_property(btn, "rotation_degrees", 2.0, 0.5).set_trans(Tween.TRANS_SINE)
-		tween.tween_property(btn, "rotation_degrees", -2.0, 0.5).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(btn, "rotation_degrees", 2.0, 0.8).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(btn, "rotation_degrees", -2.0, 0.8).set_trans(Tween.TRANS_SINE)
 		
 		# Guarda o tween dentro do botão para podermos parar depois
 		btn.set_meta("wobble_tween", tween)
